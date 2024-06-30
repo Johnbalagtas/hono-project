@@ -31,7 +31,7 @@ const expenses = expensesRoute.get("/", (c) => {
   return c.json({ expenses: fakeExpenses });
 });
 
-expensesRoute.post("/", zValidator("json", createPostSchema), async (c) => {
+const expensePost = expensesRoute.post("/", zValidator("json", createPostSchema), async (c) => {
   const expense = c.req.valid("json");
   fakeExpenses.push({ ...expense, id: fakeExpenses.length + 1 });
   c.status(201);
@@ -65,3 +65,4 @@ const total = expensesRoute.get("/total-spent", (c) => {
 export default expensesRoute;
 export type ApiRoutesType = typeof total;
 export type ExpenseType = typeof expenses;
+export type ExpensePostType = typeof expensePost; 

@@ -15,13 +15,12 @@ import { type ExpenseType } from "../../../server/routes/expenses";
 import { hc } from "hono/client";
 
 export const Route = createFileRoute("/expenses")({
-  component: () => Expenses,
+  component: () => Expenses(),
 });
 
 const client = hc<ExpenseType>("/api/expenses");
 
 async function getAllExpenses() {
-  await new Promise((r) => setTimeout(r, 3000));
   const res = await client["index"].$get();
   if (!res.ok) {
     throw new Error("Server error");
@@ -37,6 +36,11 @@ function Expenses() {
   });
 
   if (error) return "An error has occurred: " + error.message;
+
+  
+
+  //  const totalExpense = data?.expenses.reduce((acc, expense) => acc + expense.amount, 0);
+  //  console.log(totalExpense)
 
   return (
     <div className="p-4 max-w-3xl m-auto">
@@ -55,9 +59,11 @@ function Expenses() {
                 .fill(0)
                 .map((_, i) => (
                   <TableRow key={i}>
-                    <TableCell className="font-medium">{<Skeleton className="h-4" />}</TableCell>
+                    <TableCell className="font-medium">
+                      {<Skeleton className="h-4" />}
+                    </TableCell>
                     <TableCell>{<Skeleton className="h-4" />}</TableCell>
-                    <TableCell>{<Skeleton  className="h-4"/>}</TableCell>
+                    <TableCell>{<Skeleton className="h-4" />}</TableCell>
                   </TableRow>
                 ))
             : data?.expenses.map((expense) => (
